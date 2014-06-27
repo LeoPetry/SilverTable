@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+	<head>
+		<style>
+		.row {
+			display: table-row;
+		}
+		.cell {
+			display: table-cell;
+		}
+		.table {
+			display: table;
+		}
+		</style>
+	</head>
+	<body>
+		<div>Hi!</div>		
+		<div class="table"></div>
+		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="silvertable.js"></script>
+		<script>
+
+		var tbody = [{"col1" : "col1 row1" , "col2" : "col2 row1"} , {"col1" : "col1 row2" , "col2" : "col2 row2"}];
+    	var thead = { "col1" : "header for col 1" , "col2" : "header for col 2" };
+		var table = $('.table').silvertable( tbody ).css("color","blue");
+		</script>
+	</body>	
+</html>
