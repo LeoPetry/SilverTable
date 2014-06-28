@@ -5,10 +5,16 @@
     	//ex keyVal [{"col1row1":"value11","col2row1":"value21"},{"col1row2":"value12","col2row2":"value22"}];    	
 
         var settings = $.extend({
+
+            // GENERAL
             thead : '<div class="thead"></div>',
             tbody : '<div class="tbody"></div>',
             row   : '<div class="row"></div>',
-            cell  : '<div class="cell"></div>'
+            cell  : '<div class="cell"></div>',
+
+            // CALLBACKS
+            onSortAscending : function(){},
+            onSortDescending : function(){}
         },
             options
         );
@@ -42,10 +48,10 @@
 
         cols = $.map(keyVal,function(row,index){
             return $.map(row, function(value, key){                
-                if($.inArray(key,_buffer) !== -1){
-                    return key;
-                }
-                _buffer.push(key);
+                if($.inArray(key,_buffer) === -1){
+                    _buffer.push(key);
+                    return key;                    
+                }                
             });
         });
 
@@ -139,7 +145,13 @@
                 .text(colName)
                 .on('click',function(evt){
                     update_table(sortController(this));
-                    $(this).data('desc', true);
+                    if($(this).data('desc')){
+                        settings.onSortDescending(this);
+                        $(this).data('desc', false);                        
+                    }else {
+                        settings.onSortAscending(this);
+                        $(this).data('desc', true);                        
+                    }
                 })
                 .data('colName', colName)
                 .data('desc', false);
