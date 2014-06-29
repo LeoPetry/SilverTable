@@ -2,27 +2,59 @@
 <html>
 	<head>
 		<style>
-		.row {
-			display: table-row;
-		}
-		.cell {
-			display: table-cell;
-		}
-		.table {
-			display: table;
-		}
+		
 		</style>
 	</head>
 	<body>
 		<div>Hi!</div>		
-		<div class="table"></div>
+		<table class="table"></table>
+		<br /><br />
+		<div class="table2"></div>
 		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 		<script src="silvertable.js"></script>
 		<script>
 
-		var tbody = [{"col1" : "col1 row1" , "col2" : "col2 row1"} , {"col1" : "col1 row2" , "col2" : "col2 row2"}];
-    	var thead = { "col1" : "header for col 1" , "col2" : "header for col 2" };
-		var table = $('.table').silvertable( tbody ).css("color","blue");
+		var example = [
+			{
+				"Name" : "Jean-Luc Picard" , 
+				"Ship" : "USS Enterprise-E , USS Enterprise-D",
+				"Rank" : "Captain",
+				"Portrayed by" : "Patrick Stewart"
+			},
+			{
+				"Name" : "James Tiberius Kirk" , 
+				"Ship" : "USS Enterprise",
+				"Rank" : "Captain , Admiral",
+				"Portrayed by" : "William Shatner and Chris Pine"
+			},
+			{
+				"Name" : "Han Solo" , 
+				"Ship" : "Millennium Falcon",
+				"Rank" : "Captain",
+				"Portrayed by" : "Harrison Ford"
+			},
+			{
+				"Name" : "Turanga Leela" , 
+				"Ship" : "Planet Express",
+				"Rank" : "Captain",
+				"Portrayed by" : "Katey Sagal (voice)"
+			}
+		]
+
+		var table = $('.table').silvertable( example , {
+			thead : "<thead></thead>", 
+			tbody : "<tbody></tbody>" , 
+			row : "<tr></tr>",
+			cell : "<td></td>",
+			onSortAscending : function(el){
+				$(el).css("color","green");
+			},
+			onSortDescending: function(el){
+				$(el).css("color","grey");
+			},
+			onComplete: function(table){
+				$(table).children('thead').find('tr td:first-child').trigger('click');
+			} }).css("color","blue");
 		</script>
 	</body>	
 </html>
