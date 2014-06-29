@@ -14,7 +14,8 @@
 
             // CALLBACKS
             onSortAscending : function(){},
-            onSortDescending : function(){}
+            onSortDescending : function(){},
+            onComplete : function(){}
         },
             options
         );
@@ -173,7 +174,9 @@
                 _tbody.append(row);
             });
             return _tbody;
-        };        
+        };
+
+        settings.onComplete(table);        
  
         return this;
  
