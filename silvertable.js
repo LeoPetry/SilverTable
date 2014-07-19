@@ -31,7 +31,6 @@
         // new rows, cells and headers
 
         var
-            table = this,
             Row   = function(){ return $(settings.row); },
             Cell  = function(){ return $(settings.cell); },
             Thead = function(){ return $(settings.thead); },
@@ -40,8 +39,8 @@
         // store a reference to the things we are adding to the DOM
         // let the update table function have a closure over them
 
-        var thead, 
-            tbody;
+        var  
+            tbody_buffer = [];
 
         _buffer = [];
 
@@ -119,25 +118,27 @@
             return result;
         };
 
-        // let's write update_table as a function expression
-        // so that we can immediately invoke it
-        // and then return the function for later usage
+        // update table
+        // table independent implementation
+        // @param takes a table jquery element
+        // @param {optional} thead jquery element
+        // @param tbody jquery element
+        // import tbody_buffer from outer scope
 
-        var update_table = function update_table(rows){
-            if(thead === undefined){
-                thead = make_thead();
-                table.append(thead);
+        var update_table = function update_table(table, thead, tbody){
+            if(thead !== undefined){
+                table.append(thead);    
             }
-            if(tbody !== undefined){
-                tbody.remove();
-            }
-            tbody = make_tbody(rows);
-            table.append(tbody);
+            $.each(tbody_buffer, function(index, tbody){
+                if(table.has(tbody).length > 0){
+                    tbody.remove();
+                }
+            });
+            tbody_buffer.push(tbody);
+            table.append(tbody);            
+        };
 
-            return update_table;
-        }(keyVal);
-
-        function make_thead(){
+        function make_thead(table){
             var _thead = new Thead();
             var row = new Row();
             $.each(cols, function(index, colName){                
@@ -145,7 +146,7 @@
                 cell
                 .text(colName)
                 .on('click',function(evt){
-                    update_table(sortController(this));
+                    update_table(table, undefined , make_tbody(sortController(this)));
                     if($(this).data('desc')){
                         settings.onSortDescending(this);
                         $(this).data('desc', false);                        
@@ -174,11 +175,11 @@
                 _tbody.append(row);
             });
             return _tbody;
-        };
-
-        settings.onComplete(table);        
+        }; 
  
-        return this;
+        return this.each(function(){
+            update_table($(this), make_thead($(this)), make_tbody(keyVal));
+        });
  
     };
  

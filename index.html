@@ -9,7 +9,7 @@
 		<div>Hi!</div>		
 		<table class="table"></table>
 		<br /><br />
-		<div class="table2"></div>
+		<div class="table"></div>
 		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 		<script src="silvertable.js"></script>
 		<script>
@@ -51,9 +51,6 @@
 			},
 			onSortDescending: function(el){
 				$(el).css("color","grey");
-			},
-			onComplete: function(table){
-				$(table).children('thead').find('tr td:first-child').trigger('click');
 			} }).css("color","blue");
 		</script>
 	</body>	
